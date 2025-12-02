@@ -113,8 +113,6 @@ def find_euler_cycle(graph: tuple, oriented: bool = False):
 
     return path
 
-print(find_euler_cycle(({'A': {'B', 'E', 'C'}, 'B': {'A', 'C'}, 'C': {'B', 'D', 'A'}, 'D': {'E', 'C'}, 'E': {'D', 'A'}}, {('E', 'D'), ('D', 'E'), ('C', 'D'), ('B', 'C'), ('D', 'C'), ('A', 'E'), ('B', 'A'), ('E', 'A'), ('C', 'B'), ('A', 'B'), ('A', 'C'), ('C', 'A')})))
-
 if __name__ == '__main__':
     import doctest
     print(doctest.testmod())
