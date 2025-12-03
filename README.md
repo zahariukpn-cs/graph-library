@@ -119,6 +119,40 @@ connections = {}
 5. Софія Вольвач
 Функція приймає два графи і перевіряє чи є вони ізоморфними. Повертає булеве значення.
 
+Як встановити нашу бібліотеку?
+
+1. Клонуємо наш репозиторій для нового користувача:
+Пишемо в терміналі: git clone https://github.com/zahariukpn-cs/graph-library.git
+
+2. Відкриваємо папку з нашою бібліотекою:
+cd GRAPH-LIBRARY
+
+3. Створюємо віртуальне середовище:
+python -m venv venv
+
+4. Активуємо це середовище:
+.\venv\Scripts\activate для Windows
+source venv/bin/activate для MacOS і Linux
+
+5. Встановлюємо потрібні бібліотеки:
+pip install -r requirements.txt
+
+6. Щоб почати використовувати функції нашої бібліотеки, створюємо новий Python-файл у кореневій директорії проєкту 'GRAPH-LIBRARY'.
+
+7. Імпортування функцій із нашої бібліотеки:
+1) Читання графу й записування в словник:
+from read_graph_from_csv import read_graph_from_csv_to_dict
+Читання графу й записування в множину:
+from read_graph_from_csv import read_graph_from_csv_to_set
+2) Гамільтоновий цикл:
+3) Ейлерів цикл:
+from euler_cycle import find_euler_cycle
+4) Перевірка на дводольність:
+from graph_painting import is_bipartite
+6) Перевірка на ізоморфність:
+from isomorphism import are_isomorphic
+7) Розмалювання графу в 3 кольори:
+from graph_painting import three_coloring
 
 Враження і фідбек:
 Назар найкращий ментор!!
