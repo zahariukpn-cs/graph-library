@@ -26,6 +26,7 @@ def main():
 
     # Група дій
     action_group = parser.add_mutually_exclusive_group(required=True)
+    action_group.add_argument('--show', action='store_true', help='Просто зчитати та вивести граф')
     action_group.add_argument('--euler', action='store_true', help='Знайти Ейлерів цикл')
     # action_group.add_argument('--hamilton', action='store_true', help='Знайти Гамільтонів цикл')
     action_group.add_argument('--bipartite', action='store_true', help='Перевірити на дводольність')
@@ -93,6 +94,11 @@ def main():
 
         result = are_isomorphic(graph1, graph2)
         print(f"Графи ізоморфні: {result}")
+
+    elif args.show:
+        graph_dict = read_graph_from_csv_to_dict(args.file, mode_str)
+        if graph_dict is None: return
+        print(f"Зчитаний граф: {graph_dict}")
 
 if __name__ == "__main__":
     main()
