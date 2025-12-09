@@ -16,10 +16,13 @@ def read_graph_from_csv_to_dict(filename:str, oriented:str='undirected')\
                   values are sets of neighbors.
     """
 
-    connections = {}
+    try:
+        with open(filename, 'r', encoding='utf-8') as file:
+            file = file.readlines()
+    except FileNotFoundError:
+        return 'Не існує файлу з такою назвою в поточній директорії.'
 
-    with open(filename, 'r', encoding='utf-8') as file:
-        file = file.readlines()
+    connections = {}
 
     for line in file:
 
@@ -40,6 +43,8 @@ def read_graph_from_csv_to_dict(filename:str, oriented:str='undirected')\
                 connections[note2] |= {note1}
             else:
                 connections |= {note2: {note1}}
+        elif oriented != 'directed':
+            return 'Вкажіть "directed" у полі вводу, якщо граф орієнтований'
 
     return connections
 
@@ -61,10 +66,13 @@ def read_graph_from_csv_to_set(filename:str, oriented:str='undirected')\
                   tuples.
     """
 
-    edges = set()
+    try:
+        with open(filename, 'r', encoding='utf-8') as file:
+            file = file.readlines()
+    except FileNotFoundError:
+        print('Не існує файлу з такою назвою в поточній директорії.')
 
-    with open(filename, 'r', encoding='utf-8') as file:
-        file = file.readlines()
+    edges = set()
 
     for line in file:
 
@@ -79,5 +87,7 @@ def read_graph_from_csv_to_set(filename:str, oriented:str='undirected')\
         edges |= {(note1, note2)}
         if oriented == 'undirected':
             edges |= {(note2, note1)}
+        elif oriented != 'directed':
+            return 'Вкажіть "directed" у полі вводу, якщо граф орієнтований'
 
     return edges
