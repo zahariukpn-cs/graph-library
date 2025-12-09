@@ -160,6 +160,23 @@ from isomorphism import are_isomorphic
 7) Розмалювання графу в 3 кольори:
 from graph_painting import three_coloring
 
+## Інтерфейс роботи через командний рядок із використанням бібліотеки argparse
+
+1. Читання файлу:
+python main.py graph.csv --show
+2. Реалізація Ейлерового циклу:
+python main.py graph.csv --euler
+3. Реалізація Гамільтонового циклу:
+python main.py graph.csv --hamilton
+4. Перевірка на дводольність:
+python main.py graph.csv --bipartite
+5. Розфарбування графа:
+python main.py graph.csv --coloring
+6. Перевірка на ізоморфність:
+python main.py graph1.csv --isomorph --file2 graph2.csv (для ізоморфності необхідно вказати 2 файли)
+7. Інструкції для роботи з командним рядком:
+python main.py --help
+Якщо граф орієнтований, то після виклику "python main.py" треба вказати --oriented будь-де.
 
 ## Висновки
 
