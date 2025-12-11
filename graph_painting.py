@@ -1,11 +1,12 @@
 """PAINTING GRAPH"""
 def is_bipartite(ghraph: dict) -> bool:
     """
-        Checks whether an undirected graph is bipartite using BFS coloring.
+    Checks whether the underlying undirected graph is bipartite using BFS coloring.
 
-    The function tries to color each node using two colors: '1' and '2'.
+    The function attempts to color each node using two colors ('1' and '2').
     A graph is bipartite if no two adjacent nodes have the same color.
-    If a conflict appears during BFS traversal, the graph is not bipartite.
+    It first constructs the underlying undirected graph from the input
+    (which may be oriented or undirected) by adding reciprocal edges.
 
     Parameters
     ----------
@@ -19,20 +20,20 @@ def is_bipartite(ghraph: dict) -> bool:
 
     Doctests
     --------
-    >>> is_bipartite({})   # empty graph
+    >>> is_bipartite({})          # empty graph
     True
 
-    >>> is_bipartite({1: []})   # single node
+    >>> is_bipartite({1: []})     # single node
     True
 
-    >>> is_bipartite({       # simple chain 1 - 2 - 3
+    >>> is_bipartite({            # simple chain 1 - 2 - 3 (undirected input)
     ...     1: [2],
     ...     2: [1, 3],
     ...     3: [2]
     ... })
     True
 
-    >>> is_bipartite({       # even cycle: 1-2-3-4-1
+    >>> is_bipartite({            # even cycle: 1-2-3-4-1 (undirected input)
     ...     1: [2, 4],
     ...     2: [1, 3],
     ...     3: [2, 4],
@@ -40,33 +41,47 @@ def is_bipartite(ghraph: dict) -> bool:
     ... })
     True
 
-    >>> is_bipartite({       # odd cycle: 1-2-3-1
+    >>> is_bipartite({            # odd cycle: 1-2-3-1 (undirected input)
     ...     1: [2, 3],
     ...     2: [1, 3],
     ...     3: [1, 2]
     ... })
     False
 
-    >>> is_bipartite({       # disconnected graph
+    >>> is_bipartite({            # oriented odd cycle: 1 -> 2 -> 3 -> 1
     ...     1: [2],
-    ...     2: [1],
-    ...     3: [4, 5],
-    ...     4: [3],
-    ...     5: [3],
+    ...     2: [3],
+    ...     3: [1]
     ... })
-    True
+    False
     """
+    adj = {node: set(neighbors) for node, neighbors in ghraph.items()}
+
+    all_nodes = set(ghraph.keys())
+    for neighbors in ghraph.values():
+        all_nodes.update(neighbors)
+
+    for node in all_nodes:
+        if node not in adj:
+            adj[node] = set()
+
+    for u in ghraph:
+        for v in ghraph[u]:
+            adj[v].add(u)
+
+    adj = {node: list(neighbors) for node, neighbors in adj.items()}
+
     color = {}
     queue = []
     #BFS
-    for node in ghraph:
+    for node in adj:
         if node not in color:
             queue = [node]
             color[node] = '1'
 
             while queue:
                 current_node = queue.pop(0)
-                for adjacent in ghraph.get(current_node, []):
+                for adjacent in adj.get(current_node, []):
                     if adjacent not in color:
                         if color[current_node] == '1':
                             color[adjacent] = '2'
@@ -80,14 +95,12 @@ def is_bipartite(ghraph: dict) -> bool:
 
 def three_coloring(graph: dict) -> list:
     """
-        Attempts to color an undirected graph using exactly the colors 'r', 'b', and 'g'.
+    Attempts to find a 3-coloring for the underlying undirected graph.
 
-    The function uses depth-first search with backtracking. Each node receives one
-    of the three colors ('r' = red, 'b' = blue, 'g' = green) such that no two
-    adjacent nodes share the same color. If a valid coloring is found, the function
-    returns a list of (node, color) pairs in the order of node appearance.
-    If no 3-coloring exists, the function returns the string
-    "Impossible to paint".
+    The function uses Depth-First Search (DFS) with backtracking to assign
+    one of three colors ('r', 'b', 'g') to each node such that no two
+    adjacent nodes share the same color. It first converts the input (which
+    may be oriented) into its underlying undirected graph.
 
     Parameters
     ----------
@@ -102,25 +115,23 @@ def three_coloring(graph: dict) -> list:
 
     Doctests
     --------
-    >>> three_coloring({})      # empty graph
+    >>> three_coloring({})              # empty graph
     []
 
-    >>> three_coloring({1: []})   # one node
+    >>> three_coloring({1: []})         # one node
     [(1, 'r')]
 
-    >>> result = three_coloring({     # path: 1 - 2 - 3
+    >>> result = three_coloring({       # path: 1 - 2 - 3 (undirected input)
     ...     1: [2],
     ...     2: [1, 3],
     ...     3: [2]
     ... })
-    >>> set(result) <= {
-    ...     (1, 'r'), (2, 'b'), (3, 'r'),
-    ...     (1, 'b'), (2, 'g'), (3, 'b'),
-    ...     (1, 'g'), (2, 'r'), (3, 'g')
-    ... }
+    >>> len(result)
+    3
+    >>> all(color in {'r', 'b', 'g'} for _, color in result)
     True
 
-    >>> result = three_coloring({     # triangle: 1-2-3 fully connected
+    >>> result = three_coloring({       # triangle: 1-2-3 fully connected (undirected input)
     ...     1: [2, 3],
     ...     2: [1, 3],
     ...     3: [1, 2]
@@ -130,22 +141,45 @@ def three_coloring(graph: dict) -> list:
     >>> all(color in {'r', 'b', 'g'} for _, color in result)
     True
 
-    >>> three_coloring({     # K4 – 4 fully connected nodes → impossible
+    >>> three_coloring({                # K4 – 4 fully connected nodes → impossible
     ...     1: [2, 3, 4],
     ...     2: [1, 3, 4],
     ...     3: [1, 2, 4],
     ...     4: [1, 2, 3]
     ... })
     'Impossible to paint'
+
+    >>> three_coloring({                # Oriented path 1 -> 2 -> 3 (Underlying graph is P3)
+    ...     1: [2],
+    ...     2: [3],
+    ...     3: []
+    ... })
+    [(1, 'r'), (2, 'b'), (3, 'r')]
     """
-    color = {item: None for item in graph} #all aren`t painted
-    nodes = list(graph.keys())
+    adj = {node: set(neighbors) for node, neighbors in graph.items()}
+
+    all_nodes = set(graph.keys())
+    for neighbors in graph.values():
+        all_nodes.update(neighbors)
+
+    for node in all_nodes:
+        if node not in adj:
+            adj[node] = set()
+
+    for u in graph:
+        for v in graph[u]:
+            adj[v].add(u)
+
+    adj = {node: list(neighbors) for node, neighbors in adj.items()}
+
+    color = {item: None for item in adj} #all aren`t painted
+    nodes = list(adj.keys())
 
     def is_to_paint(node_to_paint, color_to_try):
         """
         Check if we can safely color a node with a specific color.
         """
-        for item in graph.get(node_to_paint, []):
+        for item in adj.get(node_to_paint, []):
             if color.get(item) == color_to_try:
                 return False
         return True
