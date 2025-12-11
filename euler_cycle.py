@@ -29,9 +29,9 @@ def find_euler_cycle(graph: tuple, oriented: bool = False):
 ('A', 'E'), ('B', 'A'), ('E', 'A'), ('C', 'B'), ('A', 'B'), ('A', 'C'), ('C', 'A')}))
     >>> find_euler_cycle(({'A': {'B', 'C'}, 'B': {'C'}, 'C': {'D'}, 'D': {'E'}, 'E': {'A'}}, \
 {('D', 'E'), ('E', 'A'), ('C', 'D'), ('A', 'B'), ('A', 'C'), ('B', 'C')}), True)
-    >>> result = find_euler_cycle(({'A': {'B', 'C'},'B': {'A', 'C'},'C': {'A', 'B', 'D', 'E'}, \
-'D':{'C', 'E'},'E': {'C', 'D'}},{('A', 'B'), ('B', 'C'), ('C', 'A'),('C', 'D'), ('D', 'E'), \
-('E', 'C')}))
+    >>> result = find_euler_cycle(({'A': {'B'}, 'B': {'C'}, 'C': {'A', 'D'}, \
+'D':{'E'}, 'E': {'C'}}, {('A', 'B'), ('B', 'C'), ('C', 'A'),('C', 'D'), ('D', 'E'), \
+('E', 'C')}), True)
     >>> len(result) == 7
     True
     >>> find_euler_cycle(({'A': {'B'},'B': {'C'},'C': {'A', 'D'}, 'D': {'E'},'E': {'C'}},\
@@ -63,7 +63,7 @@ def find_euler_cycle(graph: tuple, oriented: bool = False):
                 return None
         #it is suitable to make a cycle (we will check if the graph is connected at the end)
     else:
-        #ins and outsmust be the same (ins-outs = 0)
+        #ins and outs must be the same (ins-outs = 0)
         balance = {}
 
         for node, neighbors in adj.items():
@@ -108,12 +108,14 @@ def find_euler_cycle(graph: tuple, oriented: bool = False):
 
     #now check if the grapg is connected
     total_edges_count = len(edges)
+    if oriented:
+        total_edges_count = len(edges)
+    elif not oriented:
+        total_edges_count = len(edges) / 2
+
     if len(path) - 1 != total_edges_count:
         return None
-
     return path
-
-print(find_euler_cycle(({'A': {'B', 'E', 'C'}, 'B': {'A', 'C'}, 'C': {'B', 'D', 'A'}, 'D': {'E', 'C'}, 'E': {'D', 'A'}}, {('E', 'D'), ('D', 'E'), ('C', 'D'), ('B', 'C'), ('D', 'C'), ('A', 'E'), ('B', 'A'), ('E', 'A'), ('C', 'B'), ('A', 'B'), ('A', 'C'), ('C', 'A')})))
 
 if __name__ == '__main__':
     import doctest
