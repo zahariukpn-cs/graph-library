@@ -56,17 +56,33 @@ def is_bipartite(ghraph: dict) -> bool:
     ... })
     True
     """
+    adj = {node: set(neighbors) for node, neighbors in ghraph.items()}
+
+    all_nodes = set(ghraph.keys())
+    for neighbors in ghraph.values():
+        all_nodes.update(neighbors)
+
+    for node in all_nodes:
+        if node not in adj:
+            adj[node] = set()
+
+    for u in ghraph:
+        for v in ghraph[u]:
+            adj[v].add(u)
+
+    adj = {node: list(neighbors) for node, neighbors in adj.items()}
+
     color = {}
     queue = []
     #BFS
-    for node in ghraph:
+    for node in adj:
         if node not in color:
             queue = [node]
             color[node] = '1'
 
             while queue:
                 current_node = queue.pop(0)
-                for adjacent in ghraph.get(current_node, []):
+                for adjacent in adj.get(current_node, []):
                     if adjacent not in color:
                         if color[current_node] == '1':
                             color[adjacent] = '2'
