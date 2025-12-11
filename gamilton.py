@@ -1,5 +1,7 @@
 """Gamilton's Scicle"""
 import time
+import numpy as np
+import matplotlib.pyplot as mp
 
 
 def make_way(graph: dict, passed_way = None)-> list|bool:
@@ -158,7 +160,20 @@ def analise():
     for i in range(100, 1000, 50):
         print(f"Час роботи з графом у якого {i} вершин: {time_for_n(i)}")
 
-analise()
+def build_schedule():
+    """
+    This function help to ьфлу schedule about time of working.
+    x-value: is amount of tops in graph
+    y-value: is time for work with this graph
+    """
+    x_values = [i for i in range(100, 1000, 50)]
+    y_values = [time_for_n(n) for n in x_values]
+    mp.plot(x_values, y_values)
+    mp.title("Simple Line Plot")
+    mp.xlabel("N-graph")
+    mp.ylabel("Time")
+    mp.show()
+
 
 if __name__ == '__main__':
     import doctest
