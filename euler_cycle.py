@@ -108,9 +108,13 @@ def find_euler_cycle(graph: tuple, oriented: bool = False):
 
     #now check if the grapg is connected
     total_edges_count = len(edges)
-    if len(path) - 1 != total_edges_count:
-        return None
+    if oriented:
+        total_edges_count = len(edges)
+    elif not oriented:
+        total_edges_count = len(edges) / 2
 
+    if len(path) - 1 != total_edges_count:
+            return None
     return path
 
 if __name__ == '__main__':
