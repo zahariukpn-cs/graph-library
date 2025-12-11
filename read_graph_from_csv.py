@@ -30,9 +30,11 @@ def read_graph_from_csv_to_dict(filename:str, oriented:str='undirected')\
         line = line.strip().split(',')
         length = len(line)
 
-        # There are no more than 2 nodes in each line
-        if length > 2 or length < 2:
-            raise ValueError('Програма зчитує лише один граф')
+        # There are no more or less than 2 nodes in each line
+        if length != 2:
+              raise ValueError('Програма зчитує лише один граф')
+        elif line[-1] == '' or line[0] == '':
+              raise ValueError('Програма не зчитує граф із ізольованими вершинами')
         note1, note2 = line[0], line[-1]
         if note1 in connections:
             connections[note1] |= {note2}
@@ -80,9 +82,11 @@ def read_graph_from_csv_to_set(filename:str, oriented:str='undirected')\
         line = line.strip().split(',')
         length = len(line)
 
-        # There are no more than 2 nodes in each line
-        if length > 2 or length < 2:
-            raise ValueError('Програма зчитує лише один граф')
+        # There are no more or less than 2 nodes in each line
+        if length != 2:
+              raise ValueError('Програма зчитує лише один граф')
+        elif line[-1] == '' or line[0] == '':
+              raise ValueError('Програма не зчитує граф із ізольованими вершинами')
         note1, note2 = line[0], line[-1]
         edges |= {(note1, note2)}
         if oriented == 'undirected':
