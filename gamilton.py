@@ -1,6 +1,5 @@
 """Gamilton's Scicle"""
 import time
-import numpy as np
 import matplotlib.pyplot as mp
 
 
@@ -128,16 +127,12 @@ def generate_graph_n(n):
     graph = {}
     for i in range(1, n+1):
         neigh = set()
-        # циклічні сусіди
-        neigh.add(i-1 if i > 1 else n)   # попередній (для 1 -> 1000)
-        neigh.add(i+1 if i < n else 1)   # наступний (для 1000 -> 1)
-        # хорда вперед (i, i+2) якщо існує
+        neigh.add(i-1 if i > 1 else n)
+        neigh.add(i+1 if i < n else 1)
         if i <= n-2:
             neigh.add(i+2)
-        # хорда назад (i-2, i) якщо існує (створює симетрію для хорд)
         if i >= 3:
             neigh.add(i-2)
-        # зберігаємо відсортований список для детермінованості
         graph[i] = sorted(neigh)
     return graph
 
