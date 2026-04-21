@@ -2,10 +2,10 @@ import streamlit as st
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from euler_cycle import find_euler_cycle
-from gamilton import make_way
-from graph_painting import is_bipartite, three_coloring
-from isomorphism import are_isomorphic
+from algorithms.euler_cycle import find_euler_cycle
+from algorithms.gamilton import make_way
+from algorithms.graph_painting import is_bipartite, three_coloring
+from algorithms.isomorphism import are_isomorphic
 
 # Зчитування графу
 def parse_graph_input(text_input: str, oriented: bool):

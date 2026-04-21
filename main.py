@@ -1,11 +1,11 @@
 import argparse
 
-from read_graph_from_csv import read_graph_from_csv_to_dict
-from read_graph_from_csv import read_graph_from_csv_to_set
-from euler_cycle import find_euler_cycle
-from graph_painting import is_bipartite, three_coloring
-from isomorphism import are_isomorphic
-from gamilton import make_way
+from algorithms.read_graph_from_csv import read_graph_from_csv_to_dict
+from algorithms.read_graph_from_csv import read_graph_from_csv_to_set
+from algorithms.euler_cycle import find_euler_cycle
+from algorithms.graph_painting import is_bipartite, three_coloring
+from algorithms.isomorphism import are_isomorphic
+from algorithms.gamilton import make_way
 
 
 def main():
